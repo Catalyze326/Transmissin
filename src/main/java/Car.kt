@@ -1,49 +1,56 @@
 import kotlin.properties.Delegates
 
-open class Car {
+class Car {
 //    TODO have these values pull from json file
 
     //    Values for my car
-    private var rpms = 1000
-    private var speed: Int by Delegates.observable(0) { _, _, _ ->
-        if (clutchPercent < 1) changePercentClutch(rpms.toDouble() / gears[currentGear].speeds[speed]!!)
+    private var rpms: Int by Delegates.observable(1000) { _, _, newRPMs ->
+        speed = if (newRPMs != 0) gears[currentGear].speeds[newRPMs]!! else 0
+    }
+    private var speed: Int = 0
+//            by Delegates.observable(0) { _, _, _ ->
+//        if (clutchPercent < 1) changePercentClutch(rpms.toDouble() / gears[currentGear].speeds[speed]!!)
+//    }
+
+    private var gasPercent: Double by Delegates.observable(0.00) { _, _, newValue ->
+        if (gasPercent > 0) {
+            accelerate(newValue)
+        }
     }
 
-    private var gasPercent: Double by Delegates.observable(0.00) { _, _, _ ->
-//        if (gasPercent > 0) {
-//            hitGasShifting(newValue)
-//        }
-    }
-
-    var eLimitedSpeed = 125
-    var redline = 6750
+    val eLimitedSpeed = 125
+    val minRPMs = 750
+    val redline = 6750
 
     private val breakingValue = 20
 
     //  Gear 0 is neutural gear 7 is reverse
-    private var gears = arrayOf(Neutral()
-            , Gear(1, redline, 35, 0)
-            , Gear(2, redline, 65, 8)
-            , Gear(3, redline, 95, 25)
-            , Gear(4, redline, 110, 35)
-            , Gear(5, redline, 125, 45)
-            , Gear(6, redline, 125, 45)
-            , Gear(7, redline, -30, 0))
+    var gears = arrayOf(
+            Gear(0, eLimitedSpeed, 0, true, eLimitedSpeed, minRPMs, redline),
+            Gear(1, 35, 0, false, eLimitedSpeed, minRPMs, redline),
+            Gear(2, 65, 8, false, eLimitedSpeed, minRPMs, redline),
+            Gear(3, 95, 25, false, eLimitedSpeed, minRPMs, redline),
+            Gear(4, 110, 35, false, eLimitedSpeed, minRPMs, redline),
+            Gear(5, 125, 45, false, eLimitedSpeed, minRPMs, redline),
+            Gear(6, 125, 45, false, eLimitedSpeed, minRPMs, redline),
+            Gear(-1, -30, 0, false, eLimitedSpeed, minRPMs, redline))
 
     private var clutchPercent = 1.00
 
     private var currentGear: Int by Delegates.observable(0) { _, _, newValue ->
         changePercentClutch(0.00)
         newValue.changeShifter()
-        Thread {
-            while (clutchPercent < 1) {
-                changePercentClutch(rpms.toDouble() / gears[currentGear].speeds[speed]!!)
-            }
-        }.start()
+        Thread.sleep(100)
+//        TODO uncomment this after you get reving working
+//        Thread {
+//            while (clutchPercent < 1) {
+//                clutchPercent = (gears[currentGear].speeds[speed]!! / rpms.toDouble()).also(::println)
+//            }
+//        }.start()
     }
 
     private fun Int.changeShifter() {
-        println("Changing gear to ${this}")
+        println("Changing gear to $this the rpms are at $rpms and the speed is $speed")
     }
 
     private fun changePercentClutch(percent: Double) {
@@ -51,9 +58,11 @@ open class Car {
     }
 
     fun setRPMs(newRPMs: Int): Boolean {
-        return if (rpms <= redline) {
+        return if (newRPMs >= redline) {
+            println("setRPMs was asked to set the rpms to $newRPMs which is above the redline of $redline")
             false
         } else {
+            println("The new rpms were set at $newRPMs")
             rpms = newRPMs
             true
         }
@@ -65,6 +74,13 @@ open class Car {
         } else {
             if (newSpeed > speed) {
 //                Placeholder percent gas
+                Thread {
+                    var isTrue = true
+                    while (speed < newSpeed && isTrue) {
+                        gasPercent += .05
+                        accelerate(gasPercent + .05)
+                    }
+                }.start()
                 hitGasShifting(newSpeed)
                 true
             } else {
@@ -81,6 +97,8 @@ open class Car {
     //  TODO add a thing for how far the gas is pushed down
     //  TODO find a way to calculate what the rpms are going to be for a gas level in a given gear
     private fun hitGasShifting(newSpeed: Int) {
+        if (newSpeed > 0 && currentGear == 0) currentGear++
+        while (newSpeed > gears[currentGear].maxSpeed) currentGear++
         Thread {
             while (speed < newSpeed) {
                 if (gasPercent > .3 && rpms < redline / 2) {
@@ -90,7 +108,7 @@ open class Car {
         }
     }
 
-    private fun downshiftShortly(){
+    private fun downshiftShortly() {
         currentGear--
         if (gasPercent < .7) {
             gasPercent += .2
@@ -102,7 +120,7 @@ open class Car {
         }
     }
 
-    fun downshift(){
+    fun downshift() {
         currentGear--
         if (gasPercent < .7) {
             gasPercent += .05
@@ -125,6 +143,27 @@ open class Car {
         while (speed > targetSpeed) {
             speed -= ((percentBrakes * breakingValue) / 100).toInt()
             Thread.sleep(10)
+        }
+    }
+
+    fun accelerate(gasPercent: Double) {
+        while (gasPercent > neededToAcclerate()) {
+            println("the max speed of gear number ${gears[currentGear].gearNumber} is ${gears[currentGear].maxSpeed} the gas percent is $gasPercent and the gas percent needed to xcelerate is ${neededToAcclerate()} and the rpms are $rpms fianlly the speed is $speed")
+            setRPMs((((gears[currentGear].maxSpeed - speed) * ((neededToAcclerate()) - gasPercent)) * 50).toInt())
+            Thread.sleep(30)
+        }
+    }
+
+    fun neededToAcclerate(incline: Double = 1.00): Double {
+        return when (currentGear) {
+            -1 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 1.0 * incline) / 3000
+            1 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 1.0 * incline) / 3000
+            2 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 1.3 * incline) / 3000
+            3 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 1.6 * incline) / 3000
+            4 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 2.7 * incline) / 3000
+            5 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 3.9 * incline) / 3000
+            6 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 7.0 * incline) / 3000
+            else -> 0.00
         }
     }
 

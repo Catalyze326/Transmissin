@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="47329a83-f916-4a9d-8e5d-58a267bb759d" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="47329a83-f916-4a9d-8e5d-58a267bb759d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Car.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Car.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Gear.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Gear.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Neutral.kt" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,16 +23,91 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="1VOEyuDQqpztxyO98MfVCa0105N" />
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="restartRequiresConfirmation" value="false" />
+  </component>
+  <component name="RunManager" selected="Kotlin.MainKt">
+    <configuration name="MainKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="Transmission" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="MainKt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="0.0.0.0 []" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Kotlin.MainKt" />
+      <item itemvalue="Maven.0.0.0.0 []" />
+    </list>
+    <recent_temporary>
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <item itemvalue="Kotlin.MainKt" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -39,7 +121,65 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1577115998675</updated>
+      <workItem from="1577205504693" duration="9691000" />
+      <workItem from="1577252321847" duration="2299000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2338" y="1278" width="1084" height="784" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577205726668">
+      <screen x="1920" y="1080" width="1920" height="1080" />
+    </state>
+    <state x="2338" y="1278" width="1084" height="784" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577205726668" />
+    <state width="1874" height="361" key="GridCell.Tab.0.bottom" timestamp="1577316839657">
+      <screen x="1920" y="1080" width="1920" height="1080" />
+    </state>
+    <state width="1874" height="361" key="GridCell.Tab.0.bottom/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577316839657" />
+    <state width="1874" height="361" key="GridCell.Tab.0.center" timestamp="1577316839657">
+      <screen x="1920" y="1080" width="1920" height="1080" />
+    </state>
+    <state width="1874" height="361" key="GridCell.Tab.0.center/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577316839657" />
+    <state width="1874" height="361" key="GridCell.Tab.0.left" timestamp="1577316839657">
+      <screen x="1920" y="1080" width="1920" height="1080" />
+    </state>
+    <state width="1874" height="361" key="GridCell.Tab.0.left/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577316839657" />
+    <state width="1874" height="361" key="GridCell.Tab.0.right" timestamp="1577316839657">
+      <screen x="1920" y="1080" width="1920" height="1080" />
+    </state>
+    <state width="1874" height="361" key="GridCell.Tab.0.right/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577316839657" />
+    <state width="1874" height="351" key="GridCell.Tab.1.bottom" timestamp="1577221869737">
+      <screen x="1920" y="1080" width="1920" height="1080" />
+    </state>
+    <state width="1874" height="351" key="GridCell.Tab.1.bottom/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577221869737" />
+    <state width="1874" height="351" key="GridCell.Tab.1.center" timestamp="1577221869737">
+      <screen x="1920" y="1080" width="1920" height="1080" />
+    </state>
+    <state width="1874" height="351" key="GridCell.Tab.1.center/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577221869737" />
+    <state width="1874" height="351" key="GridCell.Tab.1.left" timestamp="1577221869737">
+      <screen x="1920" y="1080" width="1920" height="1080" />
+    </state>
+    <state width="1874" height="351" key="GridCell.Tab.1.left/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577221869737" />
+    <state width="1874" height="351" key="GridCell.Tab.1.right" timestamp="1577221869737">
+      <screen x="1920" y="1080" width="1920" height="1080" />
+    </state>
+    <state width="1874" height="351" key="GridCell.Tab.1.right/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577221869737" />
+    <state x="2544" y="785" key="run.anything.popup" timestamp="1577209259108">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2544" y="785" key="run.anything.popup/0.1080.1920.1080/0.0.1920.1080/1920.0.1920.1080/1920.1080.1920.1080@1920.1080.1920.1080" timestamp="1577209259108" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Car.kt</url>
+          <line>156</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
