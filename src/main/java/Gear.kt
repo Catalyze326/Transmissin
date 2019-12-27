@@ -1,45 +1,46 @@
 class Gear(val gearNumber: Int, val maxSpeed: Int, val minSpeed: Int, val isNeutral: Boolean,
-           val eLimitedSpeed: Int, val minRPMs: Int, val redline: Int) {
+           val eLimitedSpeed: Double, val minRPMs: Int, val redline: Int) {
 
-    val speeds: HashMap<Int, Int>
-    val rpms: HashMap<Int, Int>
+    val speeds: HashMap<Int, Double>
+    val rpms: HashMap<Int, Double>
 
     init {
-        speeds = if (isNeutral) getSpeedsPrivateNeutral() else getSpeedsPrivate(redline, maxSpeed, minSpeed)
-        rpms = if (isNeutral) getSpeedsPrivateNeutral() else getRPMsPrivate(redline, maxSpeed)
+        speeds = if (isNeutral) getSpeedsPrivateNeutral() else getSpeedsPrivate(redline)
+        rpms = if (isNeutral) getSpeedsPrivateNeutral() else getRPMsPrivate(redline)
         println("[DEBUG] Loaded gear number $gearNumber")
     }
 
-    fun getSpeedsPrivate(redline: Int, maxSpeed: Int, minSpeed: Int): HashMap<Int, Int> {
-        val speeds = HashMap<Int, Int>()
-        val speedRange = (maxSpeed - minSpeed).also(::println)
-        for (i in 0..speedRange) {
-            speeds[maxSpeed - i] = (redline / speedRange * i)
+    private fun getSpeedsPrivate(redline: Int): HashMap<Int, Double> {
+        val speeds = HashMap<Int, Double>()
+        val speedRange = (maxSpeed - minSpeed)
+        var counter = 0
+        for (i in maxSpeed downTo minSpeed) {
+            speeds[i] = 1000 + (redline.toDouble() / counter++.toDouble())
         }
         return speeds
     }
 
-    fun getSpeedsPrivateNeutral(): HashMap<Int, Int> {
-        val speeds = HashMap<Int, Int>()
-        for (i in 0..eLimitedSpeed) {
-            speeds[i] = minRPMs
+    private fun getSpeedsPrivateNeutral(): HashMap<Int, Double> {
+        val speeds = HashMap<Int, Double>()
+        for (i in 0..eLimitedSpeed.toInt()) {
+            speeds[i] = minRPMs.toDouble()
         }
         return speeds
     }
 
-    fun getRPMsPrivate(redline: Int, maxSpeed: Int): HashMap<Int, Int> {
-        val rpms = HashMap<Int, Int>()
+    private fun getRPMsPrivate(redline: Int): HashMap<Int, Double> {
+        val rpms = HashMap<Int, Double>()
         for (i in 750..redline) {
-            rpms[i] = (maxSpeed / (redline / i))
+            rpms[i] = (maxSpeed / (redline.toDouble() / i.toDouble()))
         }
         return rpms
     }
 
 //    TODO maybe change this later
-    fun getRPMsPrivateNeutral(redline: Int, maxSpeed: Int): HashMap<Int, Int> {
-        val rpms = HashMap<Int, Int>()
+    fun getRPMsPrivateNeutral(redline: Int, maxSpeed: Int): HashMap<Int, Double> {
+        val rpms = HashMap<Int, Double>()
         for (i in 750..redline) {
-            rpms[i] = (0)
+            rpms[i] = (0.00)
         }
         return rpms
     }

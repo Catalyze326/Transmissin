@@ -1,63 +1,80 @@
 import kotlin.properties.Delegates
 
 class Car {
-//    TODO have these values pull from json file
+    //    TODO have these values pull from json file
+//  TODO the readme
+    private val eLimitedSpeed: Double
+    private val minRPMs: Int
+    private val redline: Int
+    private val breakingValue = 20
 
-    //    Values for my car
-    private var rpms: Int by Delegates.observable(1000) { _, _, newRPMs ->
-        println("The new rpms are $newRPMs")
-        speed = gears[currentGear].rpms[newRPMs]!!.also(::println)
+    private var targetSpeed: Double by Delegates.observable(0.00) { _, _, _ ->
+        accelerate()
     }
 
-    private var speed: Int by Delegates.observable(0) { _, _, newSpeed ->
-        println("the new speed is $newSpeed")
-        if (clutchPercent < 1) changePercentClutch(rpms.toDouble() / gears[currentGear].speeds[newSpeed]!!)
+    private var clutchPercent = 1.00
+
+    private var accelCoef: Double
+    private var otherFactorsVar: Double
+
+    init {
+        accelCoef = 1.0
+        eLimitedSpeed = 125.00
+        minRPMs = 750
+        redline = 6750
+        otherFactorsVar = 1.0
+        accelerate()
+        Runtime.getRuntime().addShutdownHook(Thread {
+            println("the new speed is $speed\n" +
+                    "the rpms are $rpms \n" +
+                    "the gear is $currentGear\n" +
+                    "\n" +
+                    "Goodbye World")
+        })
+    }
+
+    //    Values for my car
+    private var rpms: Double by Delegates.observable(1000.00) { _, _, newRPMs ->
+        speed = gears[currentGear].rpms[newRPMs.toInt()]!!
+        println("the new speed is $speed\nthe rpms are $rpms \nthe gear is $currentGear\n\n\n")
+    }
+
+    private var speed: Double by Delegates.observable(0.00) { _, _, newSpeed ->
+        if (newSpeed > eLimitedSpeed) speed = eLimitedSpeed
+        println("the new speed is $speed\nthe rpms are $rpms \nthe gear is $currentGear\n\n\n")
+//        if (clutchPercent < 1) changePercentClutch(rpms.toDouble() / gears[currentGear].speeds[newSpeed]!!)
         hitGasShifting()
         if (newSpeed >= targetSpeed) {
             Runtime.getRuntime().exit(1)
         }
     }
 
+    private var currentGear: Int by Delegates.observable(1) { _, _, newValue ->
+        println("the new speed is $speed\nthe rpms are $rpms \nthe gear is $currentGear\n\n\n")
+        setRPMs(gears[newValue].speeds[gears[newValue].minSpeed]!!)
+        newValue.changeShifter()
+    }
+
     private var gasPercent: Double by Delegates.observable(0.00) { _, _, newValue ->
+        println("the new speed is $speed\nthe rpms are $rpms \nthe gear is $currentGear\n\n\n")
     }
 
-    init {
-        accelerate()
+    fun updateSpeed(newSpeed: Double) {
+        Thread {
+            speed = newSpeed
+        }.start()
     }
-
-    val eLimitedSpeed = 125
-    val minRPMs = 750
-    val redline = 6750
-    private var targetSpeed: Int = 0
-
-    private val breakingValue = 20
 
     //  Gear 0 is neutural gear 7 is reverse
     var gears = arrayOf(
-            Gear(0, eLimitedSpeed, 0, true, eLimitedSpeed, minRPMs, redline),
+            Gear(0, eLimitedSpeed.toInt(), 0, true, eLimitedSpeed, minRPMs, redline),
             Gear(1, 35, 0, false, eLimitedSpeed, minRPMs, redline),
             Gear(2, 65, 8, false, eLimitedSpeed, minRPMs, redline),
-            Gear(3, 95, 25, false, eLimitedSpeed, minRPMs, redline),
-            Gear(4, 110, 35, false, eLimitedSpeed, minRPMs, redline),
-            Gear(5, 125, 45, false, eLimitedSpeed, minRPMs, redline),
-            Gear(6, 125, 55, false, eLimitedSpeed, minRPMs, redline),
+            Gear(3, 95, 30, false, eLimitedSpeed, minRPMs, redline),
+            Gear(4, 110, 45, false, eLimitedSpeed, minRPMs, redline),
+            Gear(5, 125, 60, false, eLimitedSpeed, minRPMs, redline),
+            Gear(6, 155, 85, false, eLimitedSpeed, minRPMs, redline),
             Gear(-1, -30, 0, false, eLimitedSpeed, minRPMs, redline))
-
-    private var clutchPercent = 1.00
-
-    private var currentGear: Int by Delegates.observable(1) { _, _, newValue ->
-        rpms = 1000
-        gasPercent = 0.00
-//        changePercentClutch(0.00)
-        newValue.changeShifter()
-//        Thread.sleep(100)
-//        TODO uncomment this after you get reving working
-//        Thread {
-//            while (clutchPercent < 1) {
-//                clutchPercent = (gears[currentGear].speeds[speed]!! / rpms.toDouble()).also(::println)
-//            }
-//        }.start()
-    }
 
     private fun Int.changeShifter() {
         println("Changing gear to $this the rpms are at $rpms and the speed is $speed")
@@ -67,37 +84,13 @@ class Car {
         clutchPercent = percent
     }
 
-    private fun setRPMs(newRPMs: Int): Boolean {
-        return if (newRPMs >= redline) {
-            println("setRPMs was asked to set the rpms to $newRPMs which is above the redline of $redline")
-            false
-        } else {
-            println("the rpms are $rpms")
-            rpms = newRPMs
-            true
-        }
+    private fun setRPMs(newRPMs: Double) {
+        rpms = if (newRPMs <= redline) newRPMs else redline - 500.00
     }
 
-    fun setSpeed(newSpeed: Int): Boolean {
-        targetSpeed = newSpeed
-        return if (newSpeed > eLimitedSpeed) {
-            false
-        } else {
-            if (newSpeed > speed) {
-//                Placeholder percent gas
-                Thread {
-                    while (newSpeed > speed) {
-                        if (gasPercent < 0.99) gasPercent += .01
-                        Thread.sleep(100)
-                    }
-                }.start()
-                true
-            } else {
-//                placeholder percent break and target speed
-                hitBrakesShifting(.3, newSpeed)
-                true
-            }
-        }
+    fun setSpeed(newSpeed: Double): Boolean {
+        targetSpeed = if (newSpeed < eLimitedSpeed) newSpeed else eLimitedSpeed
+        return true
     }
 
     //  TODO work out when to downshift to acceleration
@@ -107,80 +100,32 @@ class Car {
     //  TODO find a way to calculate what the rpms are going to be for a gas level in a given gear
     private fun hitGasShifting() {
         if (currentGear != 6) {
-            if (gears[currentGear].minSpeed < speed)
+            if (gears[currentGear].maxSpeed < speed)
                 currentGear++
-            if (rpms > redline - 500)
+            else if (gears[currentGear].maxSpeed < speed)
+                currentGear--
+            if (rpms > redline - 1000)
                 currentGear++
         }
     }
 
-    private fun downshiftShortly() {
-        currentGear--
-        if (gasPercent < .7) {
-            gasPercent += .2
-            while (rpms < (4 / 5) * redline) {
-                Thread.sleep(10)
-            }
-            currentGear++
-            gasPercent -= .2
-        }
-    }
 
-    fun downshift() {
-        currentGear--
-        if (gasPercent < .7) {
-            gasPercent += .05
-            while (rpms < (4 / 5) * redline) {
-                Thread.sleep(10)
-            }
-            currentGear++
-            gasPercent -= .05
-        }
-    }
-
-    private fun hitBrakesShifting(percentBrakes: Double, targetSpeed: Int) {
-        Thread {
-            while (speed > targetSpeed) {
-                if (gears[currentGear].speeds[speed]!! < rpms) {
-                    currentGear = 0
-                }
-            }
-        }.start()
-        while (speed > targetSpeed) {
-            speed -= ((percentBrakes * breakingValue) / 100).toInt()
-            Thread.sleep(10)
-        }
-    }
-
-    fun accelerate() {
+    private fun accelerate() {
         Thread {
             while (true) {
-                if (speed != targetSpeed && gasPercent > neededToAcclerate()) {
-                    println("${neededToAcclerate()},     $gasPercent")
-                    setRPMs(((((gasPercent - neededToAcclerate()) * redline)) + 750).toInt().also(::println))
-                    Thread.sleep(10)
+                while (targetSpeed > speed) {
+                    setRPMs(rpms + (redline * otherFactorsVar * accelCoef))
+                }
+                while (targetSpeed < speed) {
+                    setRPMs(rpms - (redline * otherFactorsVar * accelCoef))
                 }
             }
         }.start()
-    }
-
-    fun neededToAcclerate(incline: Double = 1.00): Double {
-        return when (currentGear) {
-            -1 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 1.0 * incline) / 3000
-            1 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 1.0 * incline) / 3000
-            2 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 1.3 * incline) / 3000
-            3 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 1.6 * incline) / 3000
-            4 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 2.7 * incline) / 3000
-            5 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 3.9 * incline) / 3000
-            6 -> (((gears[currentGear].maxSpeed / (speed + 1)) * (redline / rpms + 1)) * 7.0 * incline) / 3000
-            else -> 0.00
-        }
     }
 
     // TODO get the percentage of break to hit in order to stop in time what I have is wrong
     fun comeToStop(distance: Int) {
         val fps = speed * 1.467
-        hitBrakesShifting(((breakingValue / fps) * (fps / 2)) / distance, 0)
         currentGear = 0
     }
 }

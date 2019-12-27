@@ -1,8 +1,7 @@
-fun main(args: Array<String>){
+fun main(args: Array<String>) {
     println("hello world")
 
     val myCar = Car()
-
-    myCar.setSpeed(120)
-//    myCar.comeToStop(150)
+    myCar.setSpeed(65.0)
+    myCar.setSpeed(120.0)
 }
