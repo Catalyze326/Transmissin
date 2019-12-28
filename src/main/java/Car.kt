@@ -1,4 +1,5 @@
 import kotlin.properties.Delegates
+import kotlin.system.exitProcess
 
 class Car {
     //    TODO have these values pull from json file
@@ -44,9 +45,7 @@ class Car {
         println("the new speed is $speed\nthe rpms are $rpms \nthe gear is $currentGear\n\n\n")
 //        if (clutchPercent < 1) changePercentClutch(rpms.toDouble() / gears[currentGear].speeds[newSpeed]!!)
         hitGasShifting()
-        if (newSpeed >= targetSpeed) {
-            Runtime.getRuntime().exit(1)
-        }
+        if (newSpeed >= targetSpeed) exitProcess(1)
     }
 
     private var currentGear: Int by Delegates.observable(1) { _, _, newValue ->

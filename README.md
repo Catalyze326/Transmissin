@@ -1,0 +1,3 @@
+# Transmission
+
+I want to make my car self driving and I have a car that is a stick shift so I needed a way to shift the gears without my help while the car is being self driven. It is useless to have a self driving car that needs you to work the clutch and the shifter so this is stage one of the project that just handles shifting when given a desired speed, friction/drag/etc coefficient, and how fast it ought to accelerate. I also did it in kotlin simply because I wanted to learn the language and will probably port it over to c with objects at some point soon given I can find libraries for c to connect with an obd2 port.

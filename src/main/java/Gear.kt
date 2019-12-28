@@ -12,7 +12,6 @@ class Gear(val gearNumber: Int, val maxSpeed: Int, val minSpeed: Int, val isNeut
 
     private fun getSpeedsPrivate(redline: Int): HashMap<Int, Double> {
         val speeds = HashMap<Int, Double>()
-        val speedRange = (maxSpeed - minSpeed)
         var counter = 0
         for (i in maxSpeed downTo minSpeed) {
             speeds[i] = 1000 + (redline.toDouble() / counter++.toDouble())
